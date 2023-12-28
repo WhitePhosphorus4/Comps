@@ -1,0 +1,24 @@
+# version: '2.0'
+services:
+  webapp:
+    build:
+      context: .
+      dockerfile: dockerfile
+    image: xh/testforcompose 
+    container_name: sample-testforcompose
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+    ports:
+      - "8000:7000"
+  redis:
+    image: "redis:alpine"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+    ports:
+      - "14321:6379"

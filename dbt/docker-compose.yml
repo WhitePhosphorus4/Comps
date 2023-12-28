@@ -1,0 +1,41 @@
+# version: '3'
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: 123456789
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  app:
+    build: ./app
+    image: xh/testfordb
+    container_name: sample-testfordb
+    volumes:
+      - ./app:/usr/src/app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    stdin_open: true  # 启动标准输入
+    tty: true      # 启动交互式终端
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+  
+volumes:
+  db_data:
